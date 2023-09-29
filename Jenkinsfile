@@ -8,13 +8,13 @@ pipeline {
                 script {
                     def scmVars = checkout([
                         $class: 'GitSCM',
-                        branches: [[name: 'Main']], // You can change the branch as needed
+                        branches: [[name: 'main']], // Let op de hoofdletter 'main'
                         doGenerateSubmoduleConfigurations: false,
                         extensions: [
                             [$class: 'CloneOption', noTags: false, reference: '', shallow: false],
                             [$class: 'CleanBeforeCheckout'],
                         ],
-                        userRemoteConfigs: [[url: 'https://github.com/bartheesbeen/pipeline.git']] // Replace with your GitHub repo URL
+                        userRemoteConfigs: [[url: 'https://github.com/bartheesbeen/pipeline.git']] // Vervang door jouw GitHub-repo URL
                     ])
                 }
             }
@@ -23,14 +23,21 @@ pipeline {
         stage('Delete HTML files on Server') {
             steps {
                 // Execute shell commands to delete HTML files on the server.
-                sh 'ssh student@10.10.10.50 "cd /var/www/html && rm -f *.html"'
+                script {
+                    def remoteServer = 'student@10.10.10.50'
+                    sh "ssh ${remoteServer} 'cd /var/www/html && rm -f *.html'"
+                }
             }
         }
 
         stage('Copy HTML files to Server') {
             steps {
                 // Copy HTML files from the checked-out repository to the server.
-                sh 'scp -r https://github.com/bartheesbeen/pipeline.git*.html student@10.10.10.50:/var/www/html'
+                script {
+                    def remoteServer = 'student@10.10.10.50'
+                    def localHTMLPath = "${env.WORKSPACE}/var/www/html" // Vervang door het juiste pad
+                    sh "scp -r ${localHTMLPath} ${remoteServer}:/var/www/html"
+                }
             }
         }
     }
