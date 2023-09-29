@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 script {
-                    // Checkout code using Git in PowerShell
+                    // Checkout code using Git in cmd
                     bat 'git clone https://github.com/bartheesbeen/pipeline.git'
                 }
             }
@@ -16,8 +16,8 @@ pipeline {
                 stage('Test Server') {
                     steps {
                         script {
-                            // Use PowerShell to copy files to the test server
-                            bat 'Copy-Item -Path ./* -Destination "student@10.10.10.50:/var/www/html/" -Recurse -Force'
+                            // Gebruik plink om bestanden naar de testserver te kopiëren via SCP met SSH-wachtwoord
+                            bat 'echo y | plink -ssh student@10.10.10.50 -pw student "cd /var/www/html/ && pscp -r *.* ."'
                         }
                     }
                 }
@@ -27,8 +27,8 @@ pipeline {
                     }
                     steps {
                         script {
-                            // Use PowerShell to copy files to the production server
-                            bat 'Copy-Item -Path ./* -Destination "student@10.10.10.50:/var/www/html/" -Recurse -Force'
+                            // Gebruik plink om bestanden naar de productieserver te kopiëren via SCP met SSH-wachtwoord
+                            bat 'echo y | plink -ssh jouw_ssh_gebruikersnaam@jouw_productie_server_ip -pw jouw_ssh_wachtwoord "cd /var/www/html/ && pscp -r *.* ."'
                         }
                     }
                 }
