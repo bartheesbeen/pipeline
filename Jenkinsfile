@@ -16,8 +16,8 @@ pipeline {
                 stage('Test Server') {
                     steps {
                         script {
-                            // Gebruik plink om bestanden naar de testserver te kopiëren via SCP met SSH-wachtwoord
-                            bat 'echo y | plink -ssh student@10.10.10.50 -pw student "cd /var/www/html/ && pscp -r *.* ."'
+                            // Gebruik scp om bestanden naar de testserver te kopiëren met standaard SSH-client
+                            bat 'echo y | scp -r -pw jouw_ssh_wachtwoord ./* jouw_ssh_gebruikersnaam@jouw_test_server_ip:/var/www/html/'
                         }
                     }
                 }
@@ -27,8 +27,8 @@ pipeline {
                     }
                     steps {
                         script {
-                            // Gebruik plink om bestanden naar de productieserver te kopiëren via SCP met SSH-wachtwoord
-                            bat 'echo y | plink -ssh jouw_ssh_gebruikersnaam@jouw_productie_server_ip -pw jouw_ssh_wachtwoord "cd /var/www/html/ && pscp -r *.* ."'
+                            // Gebruik scp om bestanden naar de productieserver te kopiëren met standaard SSH-client
+                            bat 'echo y | scp -r -pw jouw_ssh_wachtwoord ./* jouw_ssh_gebruikersnaam@jouw_productie_server_ip:/var/www/html/'
                         }
                     }
                 }
