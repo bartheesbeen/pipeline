@@ -17,7 +17,7 @@ pipeline {
                     steps {
                         script {
                             // Gebruik scp om bestanden naar de testserver te kopiëren met standaard SSH-client
-                            bat 'echo y | scp -r -pw jouw_ssh_wachtwoord ./* jouw_ssh_gebruikersnaam@jouw_test_server_ip:/var/www/html/'
+                            bat 'echo y | scp -r -pw student ./* student@10.10.10.50:/var/www/html/'
                         }
                     }
                 }
